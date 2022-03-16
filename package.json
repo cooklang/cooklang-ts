@@ -1,0 +1,41 @@
+{
+  "name": "cooklang-ts",
+  "version": "1.0.0",
+  "description": "Cooklang-TS is a TypeScript library for parsing and manipulating Cooklang recipes.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "prepare": "npm run build",
+    "watch": "ts-node-dev --respawn --clear --rs src/index.ts",
+    "docs": "node tools/docs.js && typedoc --readme assets/docs_readme.md --out docs src/index.ts",
+    "test": "node tests/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cooklang/cooklang-ts.git"
+  },
+  "keywords": [
+    "cooklang",
+    "parsing",
+    "typescript",
+    "cooking-recipes",
+    "cooking",
+    "markup"
+  ],
+  "author": "ThatTSGuy",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cooklang/cooklang-ts/issues"
+  },
+  "homepage": "https://github.com/cooklang/cooklang-ts#readme",
+  "devDependencies": {
+    "ts-node-dev": "^1.1.8",
+    "typedoc": "^0.22.13",
+    "typescript": "^4.6.2",
+    "yaml": "^1.10.2"
+  }
+}

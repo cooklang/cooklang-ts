@@ -1,0 +1,103 @@
+version: 4
+tests:
+  testBlockComments:
+    source: |
+      Add the @bacon [- make sure not to burn -] and cook for ~{2%minutes}
+    result:
+      steps:
+        -
+          - type: text
+            value: "Add the "
+          - type: ingredient
+            quantity: "some"
+            units: ""
+            name: "bacon"
+          - type: text
+            value: " and cook for "
+          - type: timer
+            quantity: 2
+            units: "minutes"
+            name: ""
+      metadata: []
+
+  testMultiWordFollowingSingleWordIngredient:
+    source: |
+      @ingredient and @ingredient with spaces{}
+    result:
+      steps:
+        -
+          - type: ingredient
+            quantity: "some"
+            units: ""
+            name: "ingredient"
+          - type: text
+            value: " and "
+          - type: ingredient
+            quantity: "some"
+            units: ""
+            name: "ingredient with spaces"
+      metadata: []
+
+
+  testMultiWordFollowingSingleWordCookware:
+    source: |
+      #pan and #big cooking pot{}
+    result:
+      steps:
+        -
+          - type: cookware
+            name: "pan"
+            quantity: ""
+          - type: text
+            value: " and "
+          - type: cookware
+            name: "big cooking pot"
+            quantity: ""
+      metadata: []
+
+
+  testMultiWordFollowingSingleWordCookwareAndIngredient:
+    source: |
+      #pan and @ingredient in #big cooking pot{}
+    result:
+      steps:
+        -
+          - type: cookware
+            name: "pan"
+            quantity: ""
+          - type: text
+            value: " and "
+          - type: ingredient
+            quantity: "some"
+            units: ""
+            name: "ingredient"
+          - type: text
+            value: " in "
+          - type: cookware
+            name: "big cooking pot"
+            quantity: ""
+      metadata: []
+
+
+  testMultiWordFollowingSingleWordIngredientAndCookware:
+    source: |
+      @ingredient in #pan and @other ingredient{}
+    result:
+      steps:
+        -
+          - type: ingredient
+            quantity: "some"
+            units: ""
+            name: "ingredient"
+          - type: text
+            value: " in "
+          - type: cookware
+            name: "pan"
+            quantity: ""
+          - type: text
+            value: " and "
+          - type: ingredient
+            quantity: "some"
+            units: ""
+            name: "other ingredient"
+      metadata: []

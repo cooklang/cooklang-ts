@@ -1,7 +1,6 @@
 # Cooklang-TS
 
-![cooklang-ts logo](assets/logo.svg#gh-light-mode-only)
-![cooklang-ts logo](assets/logo_dark.svg#gh-dark-mode-only)
+![cooklang-ts logo](https://github.com/cooklang/cooklang-ts/blob/main/assets/logo_white_bg.svg?raw=true)
 
 <div align="center">
     Cooklang-TS is a TypeScript library for parsing and manipulating <a href="https://cooklang.org/">Cooklang</a> recipes.
@@ -9,11 +8,6 @@
     <a href="https://github.com/cooklang/cooklang-ts/actions/workflows/tests.yml"><img src="https://github.com/cooklang/cooklang-ts/actions/workflows/tests.yml/badge.svg?branch=main"></a>
 </div>
 
-### To-Do
-- [x] Pass all tests
-- [ ] Add recipe scaling support
-- [ ] Add extension support
-- [ ] Markdown extension
 
 ## Usage
 ```typescript
@@ -53,9 +47,11 @@ console.log(getImageURL('Mixed Berry Smoothie', {
 // 'Mixed Berry Smoothie.1.png'
 ```
 
-## Documentation
-Documentation can be found [here](https://cooklang.github.io/cooklang-ts/) along with the [Cooklang Specification](https://cooklang.org/docs/spec/).
+## Cooklang Specification
+The specification can be found [here](https://cooklang.org/docs/spec/).
 
+## GitHub
+The repository can be found [here](https://github.com/cooklang/cooklang-ts).
 
 ## Testing
 Tests are as found in https://github.com/cooklang/spec/blob/main/tests/canonical.yaml.

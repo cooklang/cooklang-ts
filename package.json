@@ -1,5 +1,5 @@
 {
-  "name": "cooklang-ts",
+  "name": "@cooklang/cooklang-ts",
   "version": "1.0.0",
   "description": "Cooklang-TS is a TypeScript library for parsing and manipulating Cooklang recipes.",
   "main": "dist/index.js",
@@ -11,7 +11,7 @@
     "build": "tsc",
     "prepare": "npm run build",
     "watch": "ts-node-dev --respawn --clear --rs src/index.ts",
-    "docs": "node tools/docs.js && typedoc --readme assets/docs_readme.md --out docs src/index.ts",
+    "docs": "node tools/docs.js && typedoc --readme README.md --out docs src/index.ts",
     "test": "node tests/index.js"
   },
   "repository": {

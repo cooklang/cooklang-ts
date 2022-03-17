@@ -21,10 +21,10 @@ let docs = writer();
         }
     }
 
-    await fs.writeFile('./readme.md', gh.out());
+    await fs.writeFile('./.github/README.md', gh.out());
     console.log('Wrote readme.md');
 
-    await fs.writeFile('./assets/docs_readme.md', docs.out());
+    await fs.writeFile('./README.md', docs.out());
     console.log('Wrote docs_readme.md');
 })();
 

@@ -67,6 +67,13 @@ export type Metadata = { [key: string]: string };
  */
 export type ShoppingList = { [key: string]: Array<ShoppingListItem> };
 
+/**
+ * @property defaultIngredientAmount The default vaule to pass if there is no ingredient amount. By default the amount is undefined.
+ */
+export interface ParserOptions {
+    defaultIngredientAmount: undefined | string;
+}
+
 export interface ParseResult {
     metadata: Metadata;
     steps: Array<Step>;
@@ -74,6 +81,19 @@ export interface ParseResult {
 }
 
 export class Parser {
+    defaultIngredientAmount: undefined | string;
+
+    /**
+     * Creates a new parser with the supplied options.
+     * 
+     * @param options The parser's options.
+     */
+    constructor(options?: ParserOptions) {
+        if (!options) return;
+
+        if (options.defaultIngredientAmount) this.defaultIngredientAmount = options.defaultIngredientAmount;
+    }
+
     /**
      * Parses a Cooklang string and returns any metadata, steps, or shopping lists.
      * 
@@ -134,7 +154,7 @@ export class Parser {
                     step.push({
                         type: 'ingredient',
                         name: groups.sIngredientName,
-                        quantity: 'some',
+                        quantity: this.defaultIngredientAmount,
                     })
                 }
 
@@ -143,7 +163,7 @@ export class Parser {
                     step.push({
                         type: 'ingredient',
                         name: groups.mIngredientName,
-                        quantity: parseQuantity(groups.mIngredientQuantity, 'some'),
+                        quantity: parseQuantity(groups.mIngredientQuantity, this.defaultIngredientAmount),
                         units: parseUnits(groups.mIngredientUnits),
                     })
                 }

@@ -1,7 +1,7 @@
 const fs = require('node:fs/promises');
 const assert = require('node:assert');
 const YAML = require('yaml');
-const cooklang = require('../dist/index.js');
+const { Parser } = require('../dist/index.js');
 
 function replaceUndefinedWithString(item) {
     switch (item.type) {
@@ -30,6 +30,8 @@ function replaceUndefinedWithString(item) {
     }
 }
 
+const parser = new Parser({ defaultIngredientAmount: 'some' });
+
 async function runTests(yamlFile) {
     const testsFile = await fs.readFile('./tests/' + yamlFile, 'utf-8');
 
@@ -42,7 +44,7 @@ async function runTests(yamlFile) {
     for ([testName, test] of tests) {
         console.log(testName);
 
-        const recipe = new cooklang.Recipe(test.source);
+        const recipe = parser.parse(test.source);
 
         const steps = recipe.steps.map(s => s.map(i => replaceUndefinedWithString(i)));
 

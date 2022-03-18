@@ -1,20 +1,21 @@
-import { Parser, Metadata, ShoppingList, Step } from "./Parser";
+import { Parser, Metadata, ShoppingList, Step, ParserOptions } from "./Parser";
 
 export class Recipe {
     metadata: Metadata = {};
     steps: Array<Step> = [];
     shoppingList: ShoppingList = {};
-    parser: Parser;
+    private parser: Parser;
 
     /**
      * Creates a new recipe from the supplied Cooklang string.
      * 
      * @param source The Cooklang string to parse. If `source` is ommited, an empty recipe is created.
+     * @param options The options to pass to the parser
      * 
      * @see {@link https://cooklang.org/docs/spec/#the-cook-recipe-specification|Cooklang Recipe Specification}
      */
-    constructor(source?: string) {
-        this.parser = new Parser();
+    constructor(source?: string, options?: ParserOptions) {
+        this.parser = new Parser(options);
 
         if (source) {
             Object.assign(this, this.parser.parse(source));

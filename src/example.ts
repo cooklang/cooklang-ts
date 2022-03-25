@@ -1,4 +1,4 @@
-import { Recipe, Parser, getImageURL } from "cooklang-ts";
+import { Recipe, Parser, getImageURL } from "@cooklang/cooklang-ts";
 
 const source = `
 >> source: https://www.dinneratthezoo.com/wprm_print/6796

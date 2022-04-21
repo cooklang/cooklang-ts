@@ -85,6 +85,7 @@ export interface ParseResult {
 export class Parser {
     defaultCookwareAmount: string | number;
     defaultIngredientAmount: string | number;
+    defaultUnits = "";
 
     /**
      * Creates a new parser with the supplied options.
@@ -157,6 +158,7 @@ export class Parser {
                         type: 'ingredient',
                         name: groups.sIngredientName,
                         quantity: this.defaultIngredientAmount,
+                        units: this.defaultUnits,
                     })
                 }
 
@@ -166,7 +168,7 @@ export class Parser {
                         type: 'ingredient',
                         name: groups.mIngredientName,
                         quantity: parseQuantity(groups.mIngredientQuantity, this.defaultIngredientAmount),
-                        units: parseUnits(groups.mIngredientUnits),
+                        units: parseUnits(groups.mIngredientUnits, this.defaultUnits),
                     })
                 }
 
@@ -194,7 +196,7 @@ export class Parser {
                         type: 'timer',
                         name: groups.timerName,
                         quantity: parseQuantity(groups.timerQuantity),
-                        units: parseUnits(groups.timerUnits),
+                        units: parseUnits(groups.timerUnits, this.defaultUnits),
                     })
                 }
 
@@ -218,8 +220,8 @@ export class Parser {
 }
 
 function parseQuantity(quantity?: string, defaultQuantity?: string | number): string | number | undefined {
-    if (!quantity || quantity.trim() == '') {
-        if (defaultQuantity) return defaultQuantity;
+    if (!quantity || quantity.trim() === '') {
+        if (typeof defaultQuantity !== "undefined") return defaultQuantity;
         return undefined;
     }
 
@@ -235,8 +237,12 @@ function parseQuantity(quantity?: string, defaultQuantity?: string | number): st
     return quantity.trim();
 }
 
-function parseUnits(units?: string): string | undefined {
-    if (!units) return undefined;
+function parseUnits(units?: string, defaultUnits?: string): string | undefined {
+    if (!units || units.trim() === "") {
+        if (typeof defaultUnits !== "undefined") return defaultUnits;
+        return undefined;
+    }
+
     return units.trim();
 }
 

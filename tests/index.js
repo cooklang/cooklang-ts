@@ -3,33 +3,6 @@ const assert = require('node:assert');
 const YAML = require('yaml');
 const { Parser } = require('../dist/index.js');
 
-function replaceUndefinedWithString(item) {
-    switch (item.type) {
-        case 'ingredient':
-            return {
-                type: 'ingredient',
-                name: item.name,
-                quantity: item.quantity || '',
-                units: item.units || '',
-            }
-        case 'cookware':
-            return {
-                type: 'cookware',
-                name: item.name,
-                quantity: item.quantity || '',
-            }
-        case 'timer':
-            return {
-                type: 'timer',
-                name: item.name || '',
-                quantity: item.quantity || '',
-                units: item.units || '',
-            }
-        default:
-            return item;
-    }
-}
-
 const parser = new Parser();
 
 async function runTests(yamlFile) {
@@ -45,8 +18,7 @@ async function runTests(yamlFile) {
         console.log(testName);
 
         const recipe = parser.parse(test.source);
-
-        const steps = recipe.steps.map(s => s.map(i => replaceUndefinedWithString(i)));
+        const steps = recipe.steps
 
         const metadataPassed = deepEqual(recipe.metadata, Array.isArray(test.result.metadata) ? {} : test.result.metadata);
         const stepsPassed = deepEqual(steps, test.result.steps);

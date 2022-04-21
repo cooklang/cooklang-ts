@@ -8,8 +8,8 @@ import { comment, blockComment, shoppingListToken, tokens } from "./tokens";
 export interface StepIngredient {
     type: 'ingredient';
     name: string;
-    quantity?: string | number;
-    units?: string;
+    quantity: string | number;
+    units: string;
 }
 
 /**
@@ -20,7 +20,7 @@ export interface StepIngredient {
 export interface StepCookware {
     type: 'cookware';
     name: string;
-    quantity?: string | number;
+    quantity: string | number;
 }
 
 /**
@@ -31,8 +31,8 @@ export interface StepCookware {
 export interface StepTimer {
     type: 'timer';
     name?: string;
-    quantity?: string | number;
-    units?: string;
+    quantity: string | number;
+    units: string;
 }
 
 /**
@@ -167,8 +167,8 @@ export class Parser {
                     step.push({
                         type: 'ingredient',
                         name: groups.mIngredientName,
-                        quantity: parseQuantity(groups.mIngredientQuantity, this.defaultIngredientAmount),
-                        units: parseUnits(groups.mIngredientUnits, this.defaultUnits),
+                        quantity: parseQuantity(groups.mIngredientQuantity) ?? this.defaultIngredientAmount,
+                        units: parseUnits(groups.mIngredientUnits) ?? this.defaultUnits,
                     })
                 }
 
@@ -186,7 +186,7 @@ export class Parser {
                     step.push({
                         type: 'cookware',
                         name: groups.mCookwareName,
-                        quantity: parseQuantity(groups.mCookwareQuantity, this.defaultCookwareAmount),
+                        quantity: parseQuantity(groups.mCookwareQuantity) ?? this.defaultCookwareAmount,
                     })
                 }
 
@@ -195,8 +195,8 @@ export class Parser {
                     step.push({
                         type: 'timer',
                         name: groups.timerName,
-                        quantity: parseQuantity(groups.timerQuantity),
-                        units: parseUnits(groups.timerUnits, this.defaultUnits),
+                        quantity: parseQuantity(groups.timerQuantity) ?? 0,
+                        units: parseUnits(groups.timerUnits) ?? this.defaultUnits,
                     })
                 }
 
@@ -219,9 +219,8 @@ export class Parser {
     }
 }
 
-function parseQuantity(quantity?: string, defaultQuantity?: string | number): string | number | undefined {
+function parseQuantity(quantity?: string): string | number | undefined {
     if (!quantity || quantity.trim() === '') {
-        if (typeof defaultQuantity !== "undefined") return defaultQuantity;
         return undefined;
     }
 
@@ -237,9 +236,8 @@ function parseQuantity(quantity?: string, defaultQuantity?: string | number): st
     return quantity.trim();
 }
 
-function parseUnits(units?: string, defaultUnits?: string): string | undefined {
+function parseUnits(units?: string): string | undefined {
     if (!units || units.trim() === "") {
-        if (typeof defaultUnits !== "undefined") return defaultUnits;
         return undefined;
     }
 

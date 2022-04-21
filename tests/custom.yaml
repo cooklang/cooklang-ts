@@ -20,6 +20,26 @@ tests:
             name: ""
       metadata: []
 
+  testMultipleBlockComments:
+    source: |
+      Add some [- comment -] @salt and [- another comment -] @pepper
+    result:
+      steps:
+        -
+          - type: text
+            value: "Add some "
+          - type: ingredient
+            quantity: "some"
+            units: ""
+            name: "salt"
+          - type: text
+            value: " and "
+          - type: ingredient
+            quantity: "some"
+            units: ""
+            name: "pepper"
+      metadata: []
+
   testMultiWordFollowingSingleWordIngredient:
     source: |
       @ingredient and @ingredient with spaces{}

@@ -3,27 +3,27 @@ const assert = require('node:assert');
 const YAML = require('yaml');
 const { Parser } = require('../dist/index.js');
 
-function replaceUndefinedWithString(item) {
+function removeKeysWithUndefinedValues(item) {
     switch (item.type) {
         case 'ingredient':
             return {
                 type: 'ingredient',
                 name: item.name,
-                quantity: item.quantity || '',
-                units: item.units || '',
+                ...(item.quantity ? { quantity: item.quantity } : {}),
+                ...(item.units ? { units: item.units } : {}),
             }
         case 'cookware':
             return {
                 type: 'cookware',
                 name: item.name,
-                quantity: item.quantity || '',
+                ...(item.quantity ? { quantity: item.quantity } : {}),
             }
         case 'timer':
             return {
                 type: 'timer',
                 name: item.name || '',
-                quantity: item.quantity || '',
-                units: item.units || '',
+                ...(item.quantity ? { quantity: item.quantity } : {}),
+                ...(item.units ? { units: item.units } : {}),
             }
         default:
             return item;
@@ -46,16 +46,17 @@ async function runTests(yamlFile) {
 
         const recipe = parser.parse(test.source);
 
-        const steps = recipe.steps.map(s => s.map(i => replaceUndefinedWithString(i)));
+        const actualSteps = recipe.steps;
+        const expectedSteps = test.result.steps.map((step) => step.map((direction) => removeKeysWithUndefinedValues(direction)));
 
         const metadataPassed = deepEqual(recipe.metadata, Array.isArray(test.result.metadata) ? {} : test.result.metadata);
-        const stepsPassed = deepEqual(steps, test.result.steps);
+        const stepsPassed = deepEqual(actualSteps, expectedSteps);
 
         if (metadataPassed) console.log(' - Metadata: PASS');
         else console.log(' - Metadata: FAIL');
 
         if (stepsPassed) console.log(' -    Steps: PASS');
-        else { console.log(' -    Steps: FAIL'); console.log(JSON.stringify(steps, null, '\t')); console.log(JSON.stringify(test.result.steps, null, '\t')); }
+        else { console.log(' -    Steps: FAIL'); console.log(JSON.stringify(actualSteps, null, '\t')); console.log(JSON.stringify(expectedSteps, null, '\t')); }
 
         if (metadataPassed && stepsPassed) passed++;
 

@@ -151,20 +151,23 @@ export class Parser {
 
                 // single word ingredient
                 if (groups.sIngredientName) {
+                    const quantity = this.defaultIngredientAmount
                     step.push({
                         type: 'ingredient',
                         name: groups.sIngredientName,
-                        quantity: this.defaultIngredientAmount,
+                        ...(quantity ? { quantity } : {}),
                     })
                 }
 
                 // multiword ingredient
                 if (groups.mIngredientName) {
+                    const quantity = parseQuantity(groups.mIngredientQuantity, this.defaultIngredientAmount)
+                    const units = parseUnits(groups.mIngredientUnits)
                     step.push({
                         type: 'ingredient',
                         name: groups.mIngredientName,
-                        quantity: parseQuantity(groups.mIngredientQuantity, this.defaultIngredientAmount),
-                        units: parseUnits(groups.mIngredientUnits),
+                        ...(quantity ? { quantity } : {}),
+                        ...(units ? { units } : {}),
                     })
                 }
 
@@ -178,20 +181,23 @@ export class Parser {
 
                 // multiword cookware
                 if (groups.mCookwareName) {
+                    const quantity = parseQuantity(groups.mCookwareQuantity)
                     step.push({
                         type: 'cookware',
                         name: groups.mCookwareName,
-                        quantity: parseQuantity(groups.mCookwareQuantity),
+                        ...(quantity ? { quantity } : {}),
                     })
                 }
 
                 // timer
                 if (groups.timerQuantity) {
+                    const quantity = parseQuantity(groups.timerQuantity)
+                    const units = parseUnits(groups.timerUnits)
                     step.push({
                         type: 'timer',
                         name: groups.timerName,
-                        quantity: parseQuantity(groups.timerQuantity),
-                        units: parseUnits(groups.timerUnits),
+                        ...(quantity ? { quantity } : {}),
+                        ...(units ? { units } : {}),
                     })
                 }
 
@@ -245,11 +251,13 @@ function parseShoppingListItems(items: string): Array<ShoppingListItem> {
 
         if (item == '') continue;
 
-        const [name, synonym] = item.split('|');
+        const [namePart, synonymPart] = item.split('|');
+        const name = namePart.trim();
+        const synonym = synonymPart?.trim();
 
         list.push({
-            name: name.trim(),
-            synonym: synonym?.trim() || '',
+            name,
+            ...(synonym ? { synonym } : {}),
         })
     }
 

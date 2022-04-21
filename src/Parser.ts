@@ -68,10 +68,12 @@ export type Metadata = { [key: string]: string };
 export type ShoppingList = { [key: string]: Array<ShoppingListItem> };
 
 /**
- * @property defaultIngredientAmount The default vaule to pass if there is no ingredient amount. By default the amount is undefined.
+ * @property defaultCookwareAmount The default value to pass if there is no cookware amount. By default the amount is 1.
+ * @property defaultIngredientAmount The default value to pass if there is no ingredient amount. By default the amount is "some".
  */
 export interface ParserOptions {
-    defaultIngredientAmount: undefined | string;
+    defaultCookwareAmount?: string | number;
+    defaultIngredientAmount?: string | number;
 }
 
 export interface ParseResult {
@@ -81,7 +83,8 @@ export interface ParseResult {
 }
 
 export class Parser {
-    defaultIngredientAmount: undefined | string;
+    defaultCookwareAmount: string | number;
+    defaultIngredientAmount: string | number;
 
     /**
      * Creates a new parser with the supplied options.
@@ -89,9 +92,8 @@ export class Parser {
      * @param options The parser's options.
      */
     constructor(options?: ParserOptions) {
-        if (!options) return;
-
-        if (options.defaultIngredientAmount) this.defaultIngredientAmount = options.defaultIngredientAmount;
+        this.defaultCookwareAmount = options?.defaultCookwareAmount ?? 1;
+        this.defaultIngredientAmount = options?.defaultIngredientAmount ?? "some";
     }
 
     /**
@@ -173,6 +175,7 @@ export class Parser {
                     step.push({
                         type: 'cookware',
                         name: groups.sCookwareName,
+                        quantity: this.defaultCookwareAmount,
                     })
                 }
 
@@ -181,7 +184,7 @@ export class Parser {
                     step.push({
                         type: 'cookware',
                         name: groups.mCookwareName,
-                        quantity: parseQuantity(groups.mCookwareQuantity),
+                        quantity: parseQuantity(groups.mCookwareQuantity, this.defaultCookwareAmount),
                     })
                 }
 
@@ -214,9 +217,9 @@ export class Parser {
     }
 }
 
-function parseQuantity(quantity?: string, defaultText?: string): string | number | undefined {
+function parseQuantity(quantity?: string, defaultQuantity?: string | number): string | number | undefined {
     if (!quantity || quantity.trim() == '') {
-        if (defaultText) return defaultText;
+        if (defaultQuantity) return defaultQuantity;
         return undefined;
     }
 

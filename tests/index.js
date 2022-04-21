@@ -30,7 +30,7 @@ function replaceUndefinedWithString(item) {
     }
 }
 
-const parser = new Parser({ defaultIngredientAmount: 'some' });
+const parser = new Parser();
 
 async function runTests(yamlFile) {
     const testsFile = await fs.readFile('./tests/' + yamlFile, 'utf-8');

@@ -8,8 +8,8 @@ import { comment, blockComment, shoppingListToken, tokens } from "./tokens";
 export interface StepIngredient {
     type: 'ingredient';
     name: string;
-    quantity?: string | number;
-    units?: string;
+    quantity: string | number;
+    units: string;
 }
 
 /**
@@ -20,7 +20,7 @@ export interface StepIngredient {
 export interface StepCookware {
     type: 'cookware';
     name: string;
-    quantity?: string | number;
+    quantity: string | number;
 }
 
 /**
@@ -31,8 +31,8 @@ export interface StepCookware {
 export interface StepTimer {
     type: 'timer';
     name?: string;
-    quantity?: string | number;
-    units?: string;
+    quantity: string | number;
+    units: string;
 }
 
 /**
@@ -68,10 +68,12 @@ export type Metadata = { [key: string]: string };
 export type ShoppingList = { [key: string]: Array<ShoppingListItem> };
 
 /**
- * @property defaultIngredientAmount The default vaule to pass if there is no ingredient amount. By default the amount is undefined.
+ * @property defaultCookwareAmount The default value to pass if there is no cookware amount. By default the amount is 1.
+ * @property defaultIngredientAmount The default value to pass if there is no ingredient amount. By default the amount is "some".
  */
 export interface ParserOptions {
-    defaultIngredientAmount: undefined | string;
+    defaultCookwareAmount?: string | number;
+    defaultIngredientAmount?: string | number;
 }
 
 export interface ParseResult {
@@ -81,7 +83,9 @@ export interface ParseResult {
 }
 
 export class Parser {
-    defaultIngredientAmount: undefined | string;
+    defaultCookwareAmount: string | number;
+    defaultIngredientAmount: string | number;
+    defaultUnits = "";
 
     /**
      * Creates a new parser with the supplied options.
@@ -89,9 +93,8 @@ export class Parser {
      * @param options The parser's options.
      */
     constructor(options?: ParserOptions) {
-        if (!options) return;
-
-        if (options.defaultIngredientAmount) this.defaultIngredientAmount = options.defaultIngredientAmount;
+        this.defaultCookwareAmount = options?.defaultCookwareAmount ?? 1;
+        this.defaultIngredientAmount = options?.defaultIngredientAmount ?? "some";
     }
 
     /**
@@ -155,6 +158,7 @@ export class Parser {
                         type: 'ingredient',
                         name: groups.sIngredientName,
                         quantity: this.defaultIngredientAmount,
+                        units: this.defaultUnits,
                     })
                 }
 
@@ -163,8 +167,8 @@ export class Parser {
                     step.push({
                         type: 'ingredient',
                         name: groups.mIngredientName,
-                        quantity: parseQuantity(groups.mIngredientQuantity, this.defaultIngredientAmount),
-                        units: parseUnits(groups.mIngredientUnits),
+                        quantity: parseQuantity(groups.mIngredientQuantity) ?? this.defaultIngredientAmount,
+                        units: parseUnits(groups.mIngredientUnits) ?? this.defaultUnits,
                     })
                 }
 
@@ -173,6 +177,7 @@ export class Parser {
                     step.push({
                         type: 'cookware',
                         name: groups.sCookwareName,
+                        quantity: this.defaultCookwareAmount,
                     })
                 }
 
@@ -181,7 +186,7 @@ export class Parser {
                     step.push({
                         type: 'cookware',
                         name: groups.mCookwareName,
-                        quantity: parseQuantity(groups.mCookwareQuantity),
+                        quantity: parseQuantity(groups.mCookwareQuantity) ?? this.defaultCookwareAmount,
                     })
                 }
 
@@ -190,8 +195,8 @@ export class Parser {
                     step.push({
                         type: 'timer',
                         name: groups.timerName,
-                        quantity: parseQuantity(groups.timerQuantity),
-                        units: parseUnits(groups.timerUnits),
+                        quantity: parseQuantity(groups.timerQuantity) ?? 0,
+                        units: parseUnits(groups.timerUnits) ?? this.defaultUnits,
                     })
                 }
 
@@ -214,9 +219,8 @@ export class Parser {
     }
 }
 
-function parseQuantity(quantity?: string, defaultText?: string): string | number | undefined {
-    if (!quantity || quantity.trim() == '') {
-        if (defaultText) return defaultText;
+function parseQuantity(quantity?: string): string | number | undefined {
+    if (!quantity || quantity.trim() === '') {
         return undefined;
     }
 
@@ -233,7 +237,10 @@ function parseQuantity(quantity?: string, defaultText?: string): string | number
 }
 
 function parseUnits(units?: string): string | undefined {
-    if (!units) return undefined;
+    if (!units || units.trim() === "") {
+        return undefined;
+    }
+
     return units.trim();
 }
 

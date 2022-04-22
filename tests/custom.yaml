@@ -1,4 +1,4 @@
-version: 4
+version: 4.5
 tests:
   testBlockComments:
     source: |
@@ -67,12 +67,12 @@ tests:
         -
           - type: cookware
             name: "pan"
-            quantity: ""
+            quantity: 1
           - type: text
             value: " and "
           - type: cookware
             name: "big cooking pot"
-            quantity: ""
+            quantity: 1
       metadata: []
 
 
@@ -84,7 +84,7 @@ tests:
         -
           - type: cookware
             name: "pan"
-            quantity: ""
+            quantity: 1
           - type: text
             value: " and "
           - type: ingredient
@@ -95,7 +95,7 @@ tests:
             value: " in "
           - type: cookware
             name: "big cooking pot"
-            quantity: ""
+            quantity: 1
       metadata: []
 
 
@@ -113,7 +113,7 @@ tests:
             value: " in "
           - type: cookware
             name: "pan"
-            quantity: ""
+            quantity: 1
           - type: text
             value: " and "
           - type: ingredient

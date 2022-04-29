@@ -6,7 +6,7 @@ const singleWordIngredient = /@(?<sIngredientName>[^\s]+)/;
 const multiwordCookware = /#(?<mCookwareName>[^@#~[]+?){(?<mCookwareQuantity>.*?)}/;
 const singleWordCookware = /#(?<sCookwareName>[^\s]+)/;
 
-const timer = /~(?<timerName>.*?)(?:{(?<timerQuantity>.*?)(?:%(?<timerUnits>.+))?})/;
+const timer = /~(?<timerName>.*?)(?:{(?<timerQuantity>.*?)(?:%(?<timerUnits>.+?))?})/;
 
 export const comment = /--.*/g;
 export const blockComment = /\s*\[\-.*?\-\]\s*/g;

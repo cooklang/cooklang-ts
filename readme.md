@@ -12,7 +12,7 @@
 
 ## Usage
 ```typescript
-import { Recipe, Parser, getImageURL } from "cooklang-ts";
+import { Recipe, Parser, getImageURL } from "@cooklang/cooklang-ts";
 
 const source = `
 >> source: https://www.dinneratthezoo.com/wprm_print/6796
@@ -46,6 +46,7 @@ console.log(getImageURL('Mixed Berry Smoothie', {
     extension: 'png'
 }));
 // 'Mixed Berry Smoothie.1.png'
+
 ```
 
 ## Cooklang Specification

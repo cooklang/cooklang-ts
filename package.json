@@ -12,7 +12,7 @@
     "prepare": "npm run build",
     "watch": "ts-node-dev --respawn --clear --rs src/index.ts",
     "docs": "node tools/docs.js && typedoc --readme README.md --out docs src/index.ts",
-    "test": "node tests/index.js"
+    "test": "jest"
   },
   "repository": {
     "type": "git",

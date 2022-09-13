@@ -18,7 +18,7 @@ export interface ParseResult {
     shoppingList: ShoppingList;
 }
 
-export class Parser {
+export default class Parser {
     defaultCookwareAmount: string | number;
     defaultIngredientAmount: string | number;
     defaultUnits = '';

@@ -1,7 +1,7 @@
-import { Parser, ParserOptions } from './Parser';
+import Parser, { ParserOptions } from './Parser';
 import { Ingredient, Cookware, Step, Metadata, ShoppingList } from './cooklang';
 
-export class Recipe {
+export default class Recipe {
     ingredients: Array<Ingredient> = [];
     cookwares: Array<Cookware> = [];
     metadata: Metadata = {};

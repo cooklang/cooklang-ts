@@ -1,4 +1,4 @@
-import { Recipe, Parser, getImageURL } from "@cooklang/cooklang-ts";
+import { Recipe, Parser, getImageURL } from '@cooklang/cooklang-ts';
 
 const source = `
 >> source: https://www.dinneratthezoo.com/wprm_print/6796
@@ -12,12 +12,14 @@ Taste and add @honey{} if desired. Pour into two glasses and garnish with fresh 
 
 console.log(new Recipe(source));
 // {
+//     ingredients: [...],
+//     cookwares: [...],
 //     metadata: {...},
 //     steps: [
 //         [...],
-//         [...]
+//         [...],
 //     ],
-//     shoppingList: {}
+//     shoppingList: {},
 // }
 
 console.log(new Parser().parse(source).metadata);

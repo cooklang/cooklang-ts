@@ -1,75 +1,9 @@
-import { comment, blockComment, shoppingListToken, tokens } from "./tokens";
+import { comment, blockComment, shoppingList as shoppingListRegex, tokens } from './tokens';
+import { Ingredient, Cookware, Step, Metadata, Item, ShoppingList } from './cooklang';
 
 /**
- * A parsed ingredient node
- * 
- * @see {@link https://cooklang.org/docs/spec/#ingredients|Cooklang Ingredient Specification}
- */
-export interface StepIngredient {
-    type: 'ingredient';
-    name: string;
-    quantity: string | number;
-    units: string;
-}
-
-/**
- * A parsed cookware node
- * 
- * @see {@link https://cooklang.org/docs/spec/#cookware|Cooklang Cookware Specification}
- */
-export interface StepCookware {
-    type: 'cookware';
-    name: string;
-    quantity: string | number;
-}
-
-/**
- * A parsed timer node
- * 
- * @see {@link https://cooklang.org/docs/spec/#timer|Cooklang Timer Specification}
- */
-export interface StepTimer {
-    type: 'timer';
-    name?: string;
-    quantity: string | number;
-    units: string;
-}
-
-/**
- * A parsed node of text
- */
-export interface StepText {
-    type: 'text';
-    value: string;
-}
-
-export interface ShoppingListItem {
-    name: string;
-    synonym?: string;
-}
-
-/**
- * A array of parsed nodes
- */
-export type Step = Array<StepIngredient | StepCookware | StepTimer | StepText>;
-
-/**
- * A record of metadata keys and their values
- * 
- * @see {@link https://cooklang.org/docs/spec/#metadata|Cooklang Metadata Specification}
- */
-export type Metadata = { [key: string]: string };
-
-/**
- * A record of categories and their items
- * 
- * @see {@link https://cooklang.org/docs/spec/#the-shopping-list-specification|Cooklang Shopping List Specification}
- */
-export type ShoppingList = { [key: string]: Array<ShoppingListItem> };
-
-/**
- * @property defaultCookwareAmount The default value to pass if there is no cookware amount. By default the amount is 1.
- * @property defaultIngredientAmount The default value to pass if there is no ingredient amount. By default the amount is "some".
+ * @property defaultCookwareAmount The default value to pass if there is no cookware amount. By default the amount is 1
+ * @property defaultIngredientAmount The default value to pass if there is no ingredient amount. By default the amount is "some"
  */
 export interface ParserOptions {
     defaultCookwareAmount?: string | number;
@@ -77,6 +11,8 @@ export interface ParserOptions {
 }
 
 export interface ParseResult {
+    ingredients: Array<Ingredient>;
+    cookwares: Array<Cookware>;
     metadata: Metadata;
     steps: Array<Step>;
     shoppingList: ShoppingList;
@@ -85,53 +21,53 @@ export interface ParseResult {
 export class Parser {
     defaultCookwareAmount: string | number;
     defaultIngredientAmount: string | number;
-    defaultUnits = "";
+    defaultUnits = '';
 
     /**
-     * Creates a new parser with the supplied options.
+     * Creates a new parser with the supplied options
      * 
-     * @param options The parser's options.
+     * @param options The parser's options
      */
     constructor(options?: ParserOptions) {
         this.defaultCookwareAmount = options?.defaultCookwareAmount ?? 1;
-        this.defaultIngredientAmount = options?.defaultIngredientAmount ?? "some";
+        this.defaultIngredientAmount = options?.defaultIngredientAmount ?? 'some';
     }
 
     /**
-     * Parses a Cooklang string and returns any metadata, steps, or shopping lists.
+     * Parses a Cooklang string and returns any metadata, steps, or shopping lists
      * 
-     * @param source A Cooklang string.
-     * @returns The extracted metadata, steps, and shopping lists.
+     * @param source A Cooklang recipe
+     * @returns The extracted ingredients, cookwares, metadata, steps, and shopping lists
      * 
-     * @see {@link https://cooklang.org/docs/spec/#the-cook-recipe-specification|Cooklang Recipe Specification}
+     * @see {@link https://cooklang.org/docs/spec/#the-cook-recipe-specification|Cooklang Recipe}
      */
     parse(source: string): ParseResult {
+        const ingredients: Array<Ingredient> = [];
+        const cookwares: Array<Cookware> = [];
         const metadata: Metadata = {};
         const steps: Array<Step> = [];
         const shoppingList: ShoppingList = {};
 
         // Comments
-        source = source
-            .replace(comment, '')
-            .replace(blockComment, ' ');
+        source = source.replace(comment, '').replace(blockComment, ' ');
 
         // Parse shopping lists
-        for (let match of source.matchAll(shoppingListToken)) {
+        for (let match of source.matchAll(shoppingListRegex)) {
             const groups = match.groups;
             if (!groups) continue;
 
-            shoppingList[groups.name] = parseShoppingListItems(groups.items || '');
+            shoppingList[groups.name] = parseShoppingListCategory(
+                groups.items || ''
+            );
 
             // Remove it from the source
-            source = source.substring(0, match.index || 0); + source.substring((match.index || 0) + match[0].length);
+            source = source.substring(0, match.index || 0);
+            +source.substring((match.index || 0) + match[0].length);
         }
 
-        const lines = source
-            .split('\n')
-            .filter(l => l.trim().length > 0);
+        const lines = source.split('\n').filter((l) => l.trim().length > 0);
 
         for (let line of lines) {
-
             const step: Step = [];
 
             let pos = 0;
@@ -144,7 +80,7 @@ export class Parser {
                     step.push({
                         type: 'text',
                         value: line.substring(pos, match.index),
-                    })
+                    });
                 }
 
                 // metadata
@@ -154,40 +90,56 @@ export class Parser {
 
                 // single word ingredient
                 if (groups.sIngredientName) {
-                    step.push({
+                    const ingredient: Ingredient = {
                         type: 'ingredient',
                         name: groups.sIngredientName,
                         quantity: this.defaultIngredientAmount,
                         units: this.defaultUnits,
-                    })
+                    };
+
+                    ingredients.push(ingredient);
+                    step.push(ingredient);
                 }
 
                 // multiword ingredient
                 if (groups.mIngredientName) {
-                    step.push({
+                    const ingredient: Ingredient = {
                         type: 'ingredient',
                         name: groups.mIngredientName,
-                        quantity: parseQuantity(groups.mIngredientQuantity) ?? this.defaultIngredientAmount,
+                        quantity:
+                            parseQuantity(groups.mIngredientQuantity) ??
+                            this.defaultIngredientAmount,
                         units: parseUnits(groups.mIngredientUnits) ?? this.defaultUnits,
-                    })
+                    };
+
+                    ingredients.push(ingredient);
+                    step.push(ingredient);
                 }
 
                 // single word cookware
                 if (groups.sCookwareName) {
-                    step.push({
+                    const cookware: Cookware = {
                         type: 'cookware',
                         name: groups.sCookwareName,
                         quantity: this.defaultCookwareAmount,
-                    })
+                    };
+
+                    cookwares.push(cookware);
+                    step.push(cookware);
                 }
 
                 // multiword cookware
                 if (groups.mCookwareName) {
-                    step.push({
+                    const cookware: Cookware = {
                         type: 'cookware',
                         name: groups.mCookwareName,
-                        quantity: parseQuantity(groups.mCookwareQuantity) ?? this.defaultCookwareAmount,
-                    })
+                        quantity:
+                            parseQuantity(groups.mCookwareQuantity) ??
+                            this.defaultCookwareAmount,
+                    };
+
+                    cookwares.push(cookware);
+                    step.push(cookware);
                 }
 
                 // timer
@@ -197,7 +149,7 @@ export class Parser {
                         name: groups.timerName,
                         quantity: parseQuantity(groups.timerQuantity) ?? 0,
                         units: parseUnits(groups.timerUnits) ?? this.defaultUnits,
-                    })
+                    });
                 }
 
                 pos = (match.index || 0) + match[0].length;
@@ -209,13 +161,13 @@ export class Parser {
                 step.push({
                     type: 'text',
                     value: line.substring(pos),
-                })
+                });
             }
 
             if (step.length > 0) steps.push(step);
         }
 
-        return { metadata, steps, shoppingList };
+        return { ingredients, cookwares, metadata, steps, shoppingList };
     }
 }
 
@@ -244,7 +196,7 @@ function parseUnits(units?: string): string | undefined {
     return units.trim();
 }
 
-function parseShoppingListItems(items: string): Array<ShoppingListItem> {
+function parseShoppingListCategory(items: string): Array<Item> {
     const list = [];
 
     for (let item of items.split('\n')) {

@@ -1,32 +1,34 @@
-import { Parser, Metadata, ShoppingList, Step, ParserOptions } from "./Parser";
+import { Parser, ParserOptions } from './Parser';
+import { Ingredient, Cookware, Step, Metadata, ShoppingList } from './cooklang';
 
 export class Recipe {
+    ingredients: Array<Ingredient> = [];
+    cookwares: Array<Cookware> = [];
     metadata: Metadata = {};
     steps: Array<Step> = [];
     shoppingList: ShoppingList = {};
+
     private parser: Parser;
 
     /**
-     * Creates a new recipe from the supplied Cooklang string.
+     * Creates a new recipe from the supplied Cooklang string
      * 
-     * @param source The Cooklang string to parse. If `source` is ommited, an empty recipe is created.
+     * @param source The Cooklang string to parse. If `source` is ommited, an empty recipe is created
      * @param options The options to pass to the parser
      * 
-     * @see {@link https://cooklang.org/docs/spec/#the-cook-recipe-specification|Cooklang Recipe Specification}
+     * @see {@link https://cooklang.org/docs/spec/#the-cook-recipe-specification|Cooklang Recipe}
      */
     constructor(source?: string, options?: ParserOptions) {
         this.parser = new Parser(options);
 
-        if (source) {
+        if (source)
             Object.assign(this, this.parser.parse(source));
-        }
     }
 
     /**
-     * Generates a Cooklang string from the recipes metadata, steps, and shopping lists.
-     * __NOTE: Any comments will be lost.__
+     * Generates a Cooklang string from the recipes metadata, steps, and shopping lists
      * 
-     * @returns The generated Cooklang string.
+     * @returns The generated Cooklang string
      */
     toCooklang(): string {
         let metadataStr = '';
@@ -70,9 +72,5 @@ export class Recipe {
         }
 
         return [metadataStr, stepStrs.join('\n\n'), shoppingListStrs.join('\n\n')].join('\n');
-    }
-
-    toJSON(): string {
-        return JSON.stringify({ metadata: this.metadata, steps: this.steps });
     }
 }

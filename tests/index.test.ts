@@ -1,6 +1,6 @@
-import * as fs from "fs";
-import * as yaml from "yaml";
-import { Parser } from "../dist";
+import * as fs from 'fs';
+import * as yaml from 'yaml';
+import { Parser } from '../src/index';
 
 const parser = new Parser();
 

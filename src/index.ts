@@ -23,6 +23,11 @@ export function getImageURL(name: string, options?: ImageURLOptions) {
     return name + (options.step ? '.' + options.step : '') + '.' + (options.extension || 'png');
 }
 
+import Recipe from './Recipe';
+import Parser from './Parser';
+
+export { Recipe, Parser };
+
 export * from './Recipe';
 export * from './Parser';
 export * from './cooklang';

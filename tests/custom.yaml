@@ -121,3 +121,16 @@ tests:
             units: ""
             name: "other ingredient"
       metadata: []
+
+
+  testNonnumericQuantityContainingSlash:
+    source: |
+      @soy sauce{1/4 cup}
+    result:
+      steps:
+        -
+          - type: ingredient
+            quantity: "1/4 cup"
+            units: ""
+            name: "soy sauce"
+      metadata: []

@@ -182,6 +182,8 @@ function parseQuantity(quantity?: string): string | number | undefined {
 
     const [numLeft, numRight] = [Number(left), Number(right)];
 
+    if(right && isNaN(numRight)) return quantity;
+
     if (!isNaN(numLeft) && !numRight) return numLeft;
     else if (!isNaN(numLeft) && !isNaN(numRight) && !(left.startsWith('0') || right.startsWith('0'))) return numLeft / numRight;
 

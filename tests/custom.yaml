@@ -134,3 +134,11 @@ tests:
             units: ""
             name: "soy sauce"
       metadata: []
+
+  testMarkdownLinkInMetadata:
+    source: |
+      >> source: [Small Town Woman](https://www.smalltownwoman.com/easy-matzo-ball-soup/)
+    result:
+      steps: []
+      metadata:
+        "source": "[Small Town Woman](https://www.smalltownwoman.com/easy-matzo-ball-soup/)"

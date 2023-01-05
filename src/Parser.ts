@@ -65,7 +65,7 @@ export default class Parser {
             +source.substring((match.index || 0) + match[0].length);
         }
 
-        const lines = source.split('\n').filter((l) => l.trim().length > 0);
+        const lines = source.split(/\r?\n/).filter((l) => l.trim().length > 0);
 
         for (let line of lines) {
             const step: Step = [];

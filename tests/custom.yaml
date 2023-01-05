@@ -142,3 +142,13 @@ tests:
       steps: []
       metadata:
         "source": "[Small Town Woman](https://www.smalltownwoman.com/easy-matzo-ball-soup/)"
+
+  testCRLFLineEndings:
+    source: ">> source: example.com\r\nstep"
+    result:
+      steps:
+        -
+          - type: text
+            value: "step"
+      metadata:
+        "source": "example.com"

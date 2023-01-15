@@ -1,9 +1,15 @@
+export interface MatchResult {
+    matchStart: number | undefined;
+    matchEnd: number | undefined;
+}
+
+
 /**
  * An ingredient
  *
  * @see {@link https://cooklang.org/docs/spec/#ingredients|Cooklang Ingredient}
  */
-export interface Ingredient {
+export interface Ingredient extends MatchResult {
     type: 'ingredient';
     name: string;
     quantity: string | number;
@@ -15,7 +21,7 @@ export interface Ingredient {
  *
  * @see {@link https://cooklang.org/docs/spec/#cookware|Cooklang Cookware}
  */
-export interface Cookware {
+export interface Cookware extends MatchResult {
     type: 'cookware';
     name: string;
     quantity: string | number;
@@ -26,7 +32,7 @@ export interface Cookware {
  *
  * @see {@link https://cooklang.org/docs/spec/#timer|Cooklang Timer}
  */
-export interface Timer {
+export interface Timer extends MatchResult {
     type: 'timer';
     name?: string;
     quantity: string | number;
@@ -36,7 +42,7 @@ export interface Timer {
 /**
  * A piece of text
  */
-export interface Text {
+export interface Text extends MatchResult {
     type: 'text';
     value: string;
 }

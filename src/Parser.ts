@@ -80,6 +80,8 @@ export default class Parser {
                     step.push({
                         type: 'text',
                         value: line.substring(pos, match.index),
+                        matchStart: pos,
+                        matchEnd: match.index || line.substring(pos, match.index).length
                     });
                 }
 
@@ -88,6 +90,9 @@ export default class Parser {
                     metadata[groups.key.trim()] = groups.value.trim();
                 }
 
+                const matchStart = match.index;
+                const matchEnd = match.index ? match.index + match[0].length - 1 : undefined;
+
                 // single word ingredient
                 if (groups.sIngredientName) {
                     const ingredient: Ingredient = {
@@ -95,6 +100,8 @@ export default class Parser {
                         name: groups.sIngredientName,
                         quantity: this.defaultIngredientAmount,
                         units: this.defaultUnits,
+                        matchStart,
+                        matchEnd
                     };
 
                     ingredients.push(ingredient);
@@ -110,6 +117,8 @@ export default class Parser {
                             parseQuantity(groups.mIngredientQuantity) ??
                             this.defaultIngredientAmount,
                         units: parseUnits(groups.mIngredientUnits) ?? this.defaultUnits,
+                        matchStart,
+                        matchEnd
                     };
 
                     ingredients.push(ingredient);
@@ -122,6 +131,8 @@ export default class Parser {
                         type: 'cookware',
                         name: groups.sCookwareName,
                         quantity: this.defaultCookwareAmount,
+                        matchStart,
+                        matchEnd
                     };
 
                     cookwares.push(cookware);
@@ -136,6 +147,8 @@ export default class Parser {
                         quantity:
                             parseQuantity(groups.mCookwareQuantity) ??
                             this.defaultCookwareAmount,
+                        matchStart, 
+                        matchEnd
                     };
 
                     cookwares.push(cookware);
@@ -149,6 +162,8 @@ export default class Parser {
                         name: groups.timerName,
                         quantity: parseQuantity(groups.timerQuantity) ?? 0,
                         units: parseUnits(groups.timerUnits) ?? this.defaultUnits,
+                        matchStart, 
+                        matchEnd
                     });
                 }
 
@@ -161,6 +176,8 @@ export default class Parser {
                 step.push({
                     type: 'text',
                     value: line.substring(pos),
+                    matchStart: pos, 
+                    matchEnd: pos + line.length - 1
                 });
             }
 

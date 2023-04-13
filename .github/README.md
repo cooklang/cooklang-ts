@@ -13,8 +13,6 @@
 ### To-Do
 - [x] Pass all tests
 - [ ] Add recipe scaling support
-- [ ] Add extension support
-- [ ] Markdown extension
 
 ## Usage
 ```typescript

@@ -4,10 +4,13 @@ import { Ingredient, Cookware, Step, Metadata, Item, ShoppingList } from './cook
 /**
  * @property defaultCookwareAmount The default value to pass if there is no cookware amount. By default the amount is 1
  * @property defaultIngredientAmount The default value to pass if there is no ingredient amount. By default the amount is "some"
+ * @property includeStepNumber Whether or not to include the step number in ingredient and cookware nodes
+ * 
  */
 export interface ParserOptions {
     defaultCookwareAmount?: string | number;
     defaultIngredientAmount?: string | number;
+    includeStepNumber?: boolean;
 }
 
 export interface ParseResult {
@@ -21,6 +24,7 @@ export interface ParseResult {
 export default class Parser {
     defaultCookwareAmount: string | number;
     defaultIngredientAmount: string | number;
+    includeStepNumber: boolean;
     defaultUnits = '';
 
     /**
@@ -31,6 +35,7 @@ export default class Parser {
     constructor(options?: ParserOptions) {
         this.defaultCookwareAmount = options?.defaultCookwareAmount ?? 1;
         this.defaultIngredientAmount = options?.defaultIngredientAmount ?? 'some';
+        this.includeStepNumber = options?.includeStepNumber ?? false;
     }
 
     /**
@@ -67,7 +72,9 @@ export default class Parser {
 
         const lines = source.split(/\r?\n/).filter((l) => l.trim().length > 0);
 
-        for (let line of lines) {
+        for (let i = 0; i < lines.length; i++) {
+            const line = lines[i];
+
             const step: Step = [];
 
             let pos = 0;
@@ -97,6 +104,8 @@ export default class Parser {
                         units: this.defaultUnits,
                     };
 
+                    if (this.includeStepNumber) ingredient.step = i;
+
                     ingredients.push(ingredient);
                     step.push(ingredient);
                 }
@@ -112,6 +121,8 @@ export default class Parser {
                         units: parseUnits(groups.mIngredientUnits) ?? this.defaultUnits,
                     };
 
+                    if (this.includeStepNumber) ingredient.step = i;
+
                     ingredients.push(ingredient);
                     step.push(ingredient);
                 }
@@ -123,6 +134,8 @@ export default class Parser {
                         name: groups.sCookwareName,
                         quantity: this.defaultCookwareAmount,
                     };
+
+                    if (this.includeStepNumber) cookware.step = i;
 
                     cookwares.push(cookware);
                     step.push(cookware);
@@ -137,6 +150,8 @@ export default class Parser {
                             parseQuantity(groups.mCookwareQuantity) ??
                             this.defaultCookwareAmount,
                     };
+
+                    if (this.includeStepNumber) cookware.step = i;
 
                     cookwares.push(cookware);
                     step.push(cookware);
@@ -182,7 +197,7 @@ function parseQuantity(quantity?: string): string | number | undefined {
 
     const [numLeft, numRight] = [Number(left), Number(right)];
 
-    if(right && isNaN(numRight)) return quantity;
+    if (right && isNaN(numRight)) return quantity;
 
     if (!isNaN(numLeft) && !numRight) return numLeft;
     else if (!isNaN(numLeft) && !isNaN(numRight) && !(left.startsWith('0') || right.startsWith('0'))) return numLeft / numRight;

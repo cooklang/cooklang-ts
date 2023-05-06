@@ -14,8 +14,6 @@ d ![cooklang-ts logo](https://github.com/cooklang/cooklang-ts/blob/main/assets/l
 g ### To-Do
 g - [x] Pass all tests
 g - [ ] Add recipe scaling support
-g - [ ] Add extension support
-g - [ ] Markdown extension
 
 ## Usage
 ```typescript

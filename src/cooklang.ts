@@ -8,6 +8,7 @@ export interface Ingredient {
     name: string;
     quantity: string | number;
     units: string;
+    step?: number;
 }
 
 /**
@@ -19,6 +20,7 @@ export interface Cookware {
     type: 'cookware';
     name: string;
     quantity: string | number;
+    step?: number;
 }
 
 /**

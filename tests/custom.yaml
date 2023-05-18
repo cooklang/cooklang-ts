@@ -58,6 +58,19 @@ tests:
             name: "ingredient with spaces"
       metadata: []
 
+  testSingleWordIngredientFollowedByPunctuation:
+    source: |
+      @ingredient, then step.
+    result:
+      steps:
+        -
+          - type: ingredient
+            quantity: "some"
+            units: ""
+            name: "ingredient"
+          - type: text
+            value: ", then step."
+      metadata: []
 
   testMultiWordFollowingSingleWordCookware:
     source: |
@@ -73,6 +86,19 @@ tests:
           - type: cookware
             name: "big cooking pot"
             quantity: 1
+      metadata: []
+
+  testSingleWordCookwareFollowedByPunctuation:
+    source: |
+      #pan, then step.
+    result:
+      steps:
+        -
+          - type: cookware
+            name: "pan"
+            quantity: 1
+          - type: text
+            value: ", then step."
       metadata: []
 
 

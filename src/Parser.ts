@@ -72,7 +72,8 @@ export default class Parser {
 
         const lines = source.split(/\r?\n/).filter((l) => l.trim().length > 0);
 
-        for (let i = 0; i < lines.length; i++) {
+        let stepNumber = 0;
+        stepLoop: for (let i = 0; i < lines.length; i++) {
             const line = lines[i];
 
             const step: Step = [];
@@ -82,17 +83,19 @@ export default class Parser {
                 const groups = match.groups;
                 if (!groups) continue;
 
+                // metadata
+                if (groups.key && groups.value) {
+                    metadata[groups.key.trim()] = groups.value.trim();
+
+                    continue stepLoop;
+                }
+
                 // text
                 if (pos < (match.index || 0)) {
                     step.push({
                         type: 'text',
                         value: line.substring(pos, match.index),
                     });
-                }
-
-                // metadata
-                if (groups.key && groups.value) {
-                    metadata[groups.key.trim()] = groups.value.trim();
                 }
 
                 // single word ingredient
@@ -104,7 +107,7 @@ export default class Parser {
                         units: this.defaultUnits,
                     };
 
-                    if (this.includeStepNumber) ingredient.step = i;
+                    if (this.includeStepNumber) ingredient.step = stepNumber;
 
                     ingredients.push(ingredient);
                     step.push(ingredient);
@@ -121,7 +124,7 @@ export default class Parser {
                         units: parseUnits(groups.mIngredientUnits) ?? this.defaultUnits,
                     };
 
-                    if (this.includeStepNumber) ingredient.step = i;
+                    if (this.includeStepNumber) ingredient.step = stepNumber;
 
                     ingredients.push(ingredient);
                     step.push(ingredient);
@@ -135,7 +138,7 @@ export default class Parser {
                         quantity: this.defaultCookwareAmount,
                     };
 
-                    if (this.includeStepNumber) cookware.step = i;
+                    if (this.includeStepNumber) cookware.step = stepNumber;
 
                     cookwares.push(cookware);
                     step.push(cookware);
@@ -151,7 +154,7 @@ export default class Parser {
                             this.defaultCookwareAmount,
                     };
 
-                    if (this.includeStepNumber) cookware.step = i;
+                    if (this.includeStepNumber) cookware.step = stepNumber;
 
                     cookwares.push(cookware);
                     step.push(cookware);
@@ -179,7 +182,10 @@ export default class Parser {
                 });
             }
 
-            if (step.length > 0) steps.push(step);
+            if (step.length > 0) {
+                steps.push(step);
+                stepNumber++;
+            }
         }
 
         return { ingredients, cookwares, metadata, steps, shoppingList };

@@ -12,10 +12,10 @@ export default class Recipe {
 
     /**
      * Creates a new recipe from the supplied Cooklang string
-     * 
+     *
      * @param source The Cooklang string to parse. If `source` is ommited, an empty recipe is created
      * @param options The options to pass to the parser
-     * 
+     *
      * @see {@link https://cooklang.org/docs/spec/#the-cook-recipe-specification|Cooklang Recipe}
      */
     constructor(source?: string, options?: ParserOptions) {
@@ -27,7 +27,7 @@ export default class Recipe {
 
     /**
      * Generates a Cooklang string from the recipes metadata, steps, and shopping lists
-     * 
+     *
      * @returns The generated Cooklang string
      */
     toCooklang(): string {

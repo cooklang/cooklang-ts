@@ -5,7 +5,7 @@ import { Ingredient, Cookware, Step, Metadata, Item, ShoppingList } from './cook
  * @property defaultCookwareAmount The default value to pass if there is no cookware amount. By default the amount is 1
  * @property defaultIngredientAmount The default value to pass if there is no ingredient amount. By default the amount is "some"
  * @property includeStepNumber Whether or not to include the step number in ingredient and cookware nodes
- * 
+ *
  */
 export interface ParserOptions {
     defaultCookwareAmount?: string | number;
@@ -29,7 +29,7 @@ export default class Parser {
 
     /**
      * Creates a new parser with the supplied options
-     * 
+     *
      * @param options The parser's options
      */
     constructor(options?: ParserOptions) {
@@ -40,10 +40,10 @@ export default class Parser {
 
     /**
      * Parses a Cooklang string and returns any metadata, steps, or shopping lists
-     * 
+     *
      * @param source A Cooklang recipe
      * @returns The extracted ingredients, cookwares, metadata, steps, and shopping lists
-     * 
+     *
      * @see {@link https://cooklang.org/docs/spec/#the-cook-recipe-specification|Cooklang Recipe}
      */
     parse(source: string): ParseResult {

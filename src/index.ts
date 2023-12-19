@@ -35,26 +35,20 @@ export * from './cooklang';
 const p = new Parser({ includeStepNumber: true });
 
 console.log(p.parse(`
->> name: Stuffed Tomatoes with Rice
->> servings: 4
+>> source: https://www.youtube.com/watch?v=oTyVtAAKPRo
+>> tags: [ breakfast ]
+>> description: It's scrambled egg, with kimchi, and miso soup
+>> servings: 1
 
-Preheat the #oven{} to ~{180°C}.
+Crack @eggs{2} into a #bowl, and beat with chopsticks
 
-Cut the tops off of @tomatoes{4 large} and scoop out the insides to create a 'shell'. Keep the insides.
+Make @Kombu broth (or dashi)
 
-In a #pan{}, sauté @onions{1 chopped} and @garlic{2 cloves minced} in @olive oil{2 tbsp} until translucent.
+Heat a #small pan{} to high heat with #cooking oil{}
 
-Add the insides of the tomatoes (chopped) to the pan and cook for ~{5 minutes}.
+Slowly stir eggs onto pan, cook for about ~{10-15%sec}, then remove and add @sesame oil{} and @kimchi
 
-Add @uncooked rice{1 cup} to the pan, along with @water{2 cups}, @salt{}, and @pepper{}. Allow the mixture to simmer until the rice is cooked, approximately ~{18 minutes}.
+Stir @miso paste{} into kombu broth, and bring to boil
 
-In the meantime, place the tomato 'shells' in a #baking dish{} and drizzle with a bit of olive oil, then bake for ~{10 minutes}.
-
-Once the rice is cooked, add chopped @fresh basil{2 tbsp} and @grated Parmesan cheese{1/4 cup} to the pan and stir to combine.
-
-Fill the pre-baked tomato shells with the rice mixture.
-
-Return the stuffed tomatoes to the oven and bake for an additional ~{15 minutes}.
-
-Garnish with more fresh basil and serve hot.
+Pour the soup into the egg-stirring bowl, and top with chopped @scallions
 `));

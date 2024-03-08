@@ -31,24 +31,3 @@ export { Recipe, Parser };
 export * from './Recipe';
 export * from './Parser';
 export * from './cooklang';
-
-const p = new Parser({ includeStepNumber: true });
-
-console.log(p.parse(`
->> source: https://www.youtube.com/watch?v=oTyVtAAKPRo
->> tags: [ breakfast ]
->> description: It's scrambled egg, with kimchi, and miso soup
->> servings: 1
-
-Crack @eggs{2} into a #bowl, and beat with chopsticks
-
-Make @Kombu broth (or dashi)
-
-Heat a #small pan{} to high heat with #cooking oil{}
-
-Slowly stir eggs onto pan, cook for about ~{10-15%sec}, then remove and add @sesame oil{} and @kimchi
-
-Stir @miso paste{} into kombu broth, and bring to boil
-
-Pour the soup into the egg-stirring bowl, and top with chopped @scallions
-`));

@@ -1,6 +1,6 @@
 {
   "name": "@cooklang/cooklang-ts",
-  "version": "1.2.5",
+  "version": "1.2.6",
   "description": "Cooklang-TS is a TypeScript library for parsing and manipulating Cooklang recipes.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

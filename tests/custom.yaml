@@ -40,6 +40,26 @@ tests:
             name: "pepper"
       metadata: []
 
+  testMultilineBlockComments:
+    source: |
+      Add the @bacon [- make sure 
+      not to burn -] and cook for ~{2%minutes}
+    result:
+      steps:
+        - - type: text
+            value: "Add the "
+          - type: ingredient
+            quantity: "some"
+            units: ""
+            name: "bacon"
+          - type: text
+            value: " and cook for "
+          - type: timer
+            quantity: 2
+            units: "minutes"
+            name: ""
+      metadata: [] 
+
   testMultiWordFollowingSingleWordIngredient:
     source: |
       @ingredient and @ingredient with spaces{}

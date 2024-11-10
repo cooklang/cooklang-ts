@@ -9,6 +9,7 @@
   ],
   "scripts": {
     "build": "tsc",
+    "build-wasm": "wasm-pack build --target nodejs",
     "prepare": "npm run build",
     "watch": "ts-node-dev --respawn --clear --rs src/index.ts",
     "docs": "node tools/docs.js && typedoc --readme README.md --out docs src/index.ts",
@@ -41,5 +42,8 @@
     "typedoc": "^0.22.13",
     "typescript": "^4.6.2",
     "yaml": "^1.10.2"
+  },
+  "dependencies": {
+    "cooklang-wasm": "file:pkg"
   }
 }

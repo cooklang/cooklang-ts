@@ -1,6 +1,7 @@
 import * as fs from 'fs';
 import * as yaml from 'yaml';
 import { Parser } from '../src/index';
+import { State } from '../src/index';
 import { Step } from '../src/cooklang';
 
 const parser = new Parser();
@@ -31,7 +32,11 @@ testFiles.forEach((testFile) => {
                     metadata: parsed.metadata,
                 };
 
-                expect(expected).toStrictEqual(actual);
+                const state = new State();
+                const { value, error } = state.parse_full(source, false);
+
+
+                expect(value).toStrictEqual(result);
             });
         });
     });

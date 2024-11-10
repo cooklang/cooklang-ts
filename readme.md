@@ -56,6 +56,12 @@ The specification can be found [here](https://cooklang.org/docs/spec/).
 ## GitHub
 The repository can be found [here](https://github.com/cooklang/cooklang-ts).
 
+## Generating Wasm package
+
+```
+npm run build-wasm
+```
+
 ## Testing
 Tests are as found in https://github.com/cooklang/spec/blob/main/tests/canonical.yaml.
 ```

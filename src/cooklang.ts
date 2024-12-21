@@ -8,6 +8,7 @@ export interface Ingredient {
     name: string;
     quantity: string | number;
     units: string;
+    preparation?: string;
     step?: number;
 }
 

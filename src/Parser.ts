@@ -122,6 +122,7 @@ export default class Parser {
                             parseQuantity(groups.mIngredientQuantity) ??
                             this.defaultIngredientAmount,
                         units: parseUnits(groups.mIngredientUnits) ?? this.defaultUnits,
+                        ...(groups.mIngredientPreparation ? { preparation: groups.mIngredientPreparation } : null),
                     };
 
                     if (this.includeStepNumber) ingredient.step = stepNumber;

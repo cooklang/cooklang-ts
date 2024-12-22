@@ -1,0 +1,13 @@
+[package]
+name = "cooklang-wasm"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+cooklang-bindings = { path = "../cooklang-rs/bindings" }
+serde = { version = "1.0", features = ["derive"] }
+wasm-bindgen = "0.2"
+serde-wasm-bindgen = "0.5"
+
+[lib]
+crate-type = ["cdylib", "rlib"]

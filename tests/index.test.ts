@@ -17,7 +17,7 @@ testFiles.forEach((testFile) => {
         Object.entries(testData).slice(0, 3).forEach(([name, testEntry]) => {
             it(name, () => {
                 const { source, result } = testEntry;
-                const parsed = parse_recipe(source);
+                const parsed = parse_recipe(source,1);
 
                 const expected = {
                     steps: result.steps,

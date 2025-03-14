@@ -1,23 +1,27 @@
 {
-  "name": "@cooklang/cooklang-ts",
+  "name": "@mashnoon33/cooklang-ts",
   "version": "1.2.7",
   "description": "Cooklang-TS is a TypeScript library for parsing and manipulating Cooklang recipes.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "pkg/*.js",
+    "pkg/*.ts",
+    "pkg/*.wasm"
   ],
   "scripts": {
-    "build": "tsc",
-    "build-wasm": "wasm-pack build --target nodejs",
+    "build": "npm run build-wasm && tsc",
+    "build-wasm": "wasm-pack build --target web",
     "prepare": "npm run build",
     "watch": "ts-node-dev --respawn --clear --rs src/index.ts",
     "docs": "node tools/docs.js && typedoc --readme README.md --out docs src/index.ts",
-    "test": "jest"
+    "test": "jest",
+    "publish": "npm run build && npm publish"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/cooklang/cooklang-ts.git"
+    "url": "git+https://github.com/mashnoon33/cooklang-ts.git"
   },
   "keywords": [
     "cooklang",
@@ -44,6 +48,6 @@
     "yaml": "^1.10.2"
   },
   "dependencies": {
-    "cooklang-wasm": "file:pkg"
+    "cooklang-wasm": "./pkg"
   }
 }

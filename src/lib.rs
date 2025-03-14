@@ -1,9 +1,10 @@
 use wasm_bindgen::prelude::*;
 use serde::Serialize;
+use cooklang_bindings;
 
 #[wasm_bindgen]
-pub fn parse_recipe(recipe: &str) -> CooklangRecipe {
-    cooklang_bindings::parse_recipe(recipe.to_string()).into()
+pub fn parse_recipe(recipe: &str, scaling_factor: u32) -> CooklangRecipe {
+    cooklang_bindings::parse_recipe(recipe.to_string(), scaling_factor).into()
 }
 
 #[wasm_bindgen]
@@ -144,8 +145,8 @@ pub struct Item {
 
 #[derive(Clone, Serialize)]
 pub struct Amount {
-    pub(crate) quantity: Value,
-    pub(crate) units: Option<String>,
+    pub quantity: Value,
+    pub units: Option<String>,
 }
 
 #[derive(Clone, Serialize)]
@@ -352,9 +353,13 @@ impl From<cooklang_bindings::model::Item> for Item {
 
 impl From<cooklang_bindings::model::Amount> for Amount {
     fn from(amount: cooklang_bindings::model::Amount) -> Self {
-        Amount {
-            quantity: amount.quantity.into(),
-            units: amount.units.clone(),
+        unsafe {
+            let quantity = std::ptr::read(&amount as *const _ as *const cooklang_bindings::model::Value);
+            let units = std::ptr::read(&amount as *const _ as *const Option<String>);
+            Amount {
+                quantity: quantity.into(),
+                units,
+            }
         }
     }
 }

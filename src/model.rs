@@ -1,4 +1,5 @@
 use wasm_bindgen::prelude::*;
+use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
 use cooklang::model::Item as OriginalItem;
@@ -7,30 +8,30 @@ use cooklang::quantity::{
 };
 use cooklang::ScalableRecipe as OriginalRecipe;
 
-#[wasm_bindgen]
+#[derive(Serialize, Deserialize)]
 pub struct ItemText {
     pub value: String,
 }
 
-#[wasm_bindgen]
+#[derive(Serialize, Deserialize)]
 pub struct ItemIngredient {
     pub name: String,
     pub amount: Option<Amount>,
 }
 
-#[wasm_bindgen]
+#[derive(Serialize, Deserialize)]
 pub struct ItemCookware {
     pub name: String,
     pub amount: Option<Amount>,
 }
 
-#[wasm_bindgen]
+#[derive(Serialize, Deserialize)]
 pub struct ItemTimer {
     pub name: Option<String>,
     pub amount: Option<Amount>,
 }
 
-#[wasm_bindgen]
+#[derive(Serialize, Deserialize)]
 pub enum ItemType {
     Text,
     Ingredient,
@@ -38,7 +39,7 @@ pub enum ItemType {
     Timer,
 }
 
-#[wasm_bindgen]
+#[derive(Serialize, Deserialize)]
 pub struct Item {
     pub item_type: ItemType,
     pub text: Option<ItemText>,
@@ -47,7 +48,7 @@ pub struct Item {
     pub timer: Option<ItemTimer>,
 }
 
-#[wasm_bindgen]
+#[derive(Serialize, Deserialize)]
 pub struct CooklangRecipe {
     pub metadata: CooklangMetadata,
     pub steps: Vec<Step>,
@@ -55,17 +56,17 @@ pub struct CooklangRecipe {
     pub cookware: Vec<Item>,
 }
 
-#[wasm_bindgen]
+#[derive(Serialize, Deserialize)]
 pub struct Step {
     pub items: Vec<Item>,
 }
 
-#[wasm_bindgen]
+#[derive(Serialize, Deserialize)]
 pub struct IngredientList {
     inner: HashMap<String, GroupedQuantity>
 }
 
-#[wasm_bindgen]
+#[derive(Serialize, Deserialize)]
 impl IngredientList {
     #[wasm_bindgen(constructor)]
     pub fn new() -> Self {
@@ -139,7 +140,7 @@ pub(crate) fn into_group_quantity(amount: &Option<Amount>) -> GroupedQuantity {
     GroupedQuantity::from([(key, value)])
 }
 
-#[wasm_bindgen]
+#[derive(Serialize, Deserialize)]
 pub enum QuantityType {
     Number,
     Range, // how to combine ranges?
@@ -147,7 +148,7 @@ pub enum QuantityType {
     Empty,
 }
 
-#[wasm_bindgen]
+#[derive(Serialize, Deserialize)]
 pub struct GroupedQuantityKey {
     pub name: String,
     pub unit_type: QuantityType,

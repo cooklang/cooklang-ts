@@ -6,15 +6,16 @@ use cooklang::aisle::parse as parse_aisle_config_original;
 use cooklang::analysis::parse_events;
 use cooklang::parser::PullParser;
 use cooklang::{Converter, Extensions};
+use serde_wasm_bindgen::{to_value, from_value};
 
-pub mod aisle;
-pub mod model;
+// pub mod aisle;
+// pub mod model;
 
-use aisle::*;
-use model::*;
+// use aisle::*;
+// use model::*;
 
 #[wasm_bindgen]
-pub fn parse_recipe(input: String) -> CooklangRecipe {
+pub fn parse_recipe(input: String) -> JsValue {
     let extensions = Extensions::empty();
     let converter = Converter::empty();
 
@@ -28,70 +29,70 @@ pub fn parse_recipe(input: String) -> CooklangRecipe {
     )
     .unwrap_output();
 
-    into_simple_recipe(&parsed)
+    to_value(&parsed).unwrap()
 }
 
-#[wasm_bindgen]
-pub fn parse_metadata(input: String) -> CooklangMetadata {
-    let mut metadata = CooklangMetadata::new();
-    let extensions = Extensions::empty();
-    let converter = Converter::empty();
+// #[wasm_bindgen]
+// pub fn parse_metadata(input: String) -> CooklangMetadata {
+//     let mut metadata = CooklangMetadata::new();
+//     let extensions = Extensions::empty();
+//     let converter = Converter::empty();
 
-    let parser = PullParser::new(&input, extensions);
+//     let parser = PullParser::new(&input, extensions);
 
-    let parsed = parse_events(
-        parser.into_meta_iter(),
-        &input,
-        extensions,
-        &converter,
-        Default::default(),
-    )
-    .map(|c| c.metadata.map)
-    .unwrap_output();
+//     let parsed = parse_events(
+//         parser.into_meta_iter(),
+//         &input,
+//         extensions,
+//         &converter,
+//         Default::default(),
+//     )
+//     .map(|c| c.metadata.map)
+//     .unwrap_output();
 
-    // converting IndexMap into HashMap
-    let _ = &(parsed).iter().for_each(|(key, value)| {
-        metadata.insert(key.to_string(), value.to_string());
-    });
+//     // converting IndexMap into HashMap
+//     let _ = &(parsed).iter().for_each(|(key, value)| {
+//         metadata.insert(key.to_string(), value.to_string());
+//     });
 
-    metadata
-}
+//     metadata
+// }
 
-#[wasm_bindgen]
-pub fn parse_aisle_config(input: String) -> AisleConf {
-    let mut categories: Vec<AisleCategory> = Vec::new();
-    let mut cache: AisleReverseCategory = AisleReverseCategory::default();
+// #[wasm_bindgen]
+// pub fn parse_aisle_config(input: String) -> AisleConf {
+//     let mut categories: Vec<AisleCategory> = Vec::new();
+//     let mut cache: AisleReverseCategory = AisleReverseCategory::default();
 
-    let parsed = parse_aisle_config_original(&input).unwrap();
+//     let parsed = parse_aisle_config_original(&input).unwrap();
 
-    let _ = &(parsed).categories.iter().for_each(|c| {
-        let category = into_category(c);
+//     let _ = &(parsed).categories.iter().for_each(|c| {
+//         let category = into_category(c);
 
-        // building cache
-        category.ingredients.iter().for_each(|i| {
-            cache.insert(i.name.clone(), category.name.clone());
+//         // building cache
+//         category.ingredients.iter().for_each(|i| {
+//             cache.insert(i.name.clone(), category.name.clone());
 
-            i.aliases.iter().for_each(|a| {
-                cache.insert(a.to_string(), category.name.clone());
-            });
-        });
+//             i.aliases.iter().for_each(|a| {
+//                 cache.insert(a.to_string(), category.name.clone());
+//             });
+//         });
 
-        categories.push(category);
-    });
+//         categories.push(category);
+//     });
 
-    AisleConf { categories, cache }
-}
+//     AisleConf { categories, cache }
+// }
 
-#[wasm_bindgen]
-pub fn combine_ingredient_lists(lists: Vec<IngredientList>) -> IngredientList {
-    let mut combined: IngredientList = IngredientList::default();
+// #[wasm_bindgen]
+// pub fn combine_ingredient_lists(lists: Vec<IngredientList>) -> IngredientList {
+//     let mut combined: IngredientList = IngredientList::default();
 
-    lists
-        .iter()
-        .for_each(|l| merge_ingredient_lists(&mut combined, l));
+//     lists
+//         .iter()
+//         .for_each(|l| merge_ingredient_lists(&mut combined, l));
 
-    combined
-}
+//     combined
+// }
 
 
 #[cfg(test)]

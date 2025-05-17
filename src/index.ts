@@ -31,3 +31,5 @@ export { Recipe, Parser };
 export * from './Recipe';
 export * from './Parser';
 export * from './cooklang';
+
+export * from "cooklang-wasm";

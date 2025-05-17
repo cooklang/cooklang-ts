@@ -53,11 +53,31 @@ console.log(getImageURL('Mixed Berry Smoothie', {
 ## Cooklang Specification
 The specification can be found [here](https://cooklang.org/docs/spec/).
 
+## WASM
+
+install wasm-pack with cargo
+
+```sh
+cargo install wasm-bindgen-cli wasm-pack
+```
+
+also make sure you have cargo binaries in your path
+
+```sh
+export PATH="$PATH:$HOME/.cargo/bin"
+```
+
 ## GitHub
 The repository can be found [here](https://github.com/cooklang/cooklang-ts).
 
+## Generating Wasm package
+
+```sh
+npm run build-wasm
+```
+
 ## Testing
 Tests are as found in https://github.com/cooklang/spec/blob/main/tests/canonical.yaml.
-```
+```sh
 npm test
 ```

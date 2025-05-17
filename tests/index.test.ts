@@ -1,9 +1,8 @@
 import * as fs from 'fs';
 import * as yaml from 'yaml';
-import { Parser } from '../src/index';
-import { Step } from '../src/cooklang';
+import { parse_recipe } from '../src/index';
 
-const parser = new Parser();
+
 
 const testsPath = "./tests";
 const testFiles = fs.readdirSync(testsPath).filter((f) => f.endsWith(".yaml"));
@@ -19,7 +18,7 @@ testFiles.forEach((testFile) => {
         Object.entries(testData).forEach(([name, testEntry]) => {
             it(name, () => {
                 const { source, result } = testEntry;
-                const parsed = parser.parse(source);
+                const parsed = parse_recipe(source);
 
                 const expected = {
                     steps: result.steps,
@@ -31,7 +30,11 @@ testFiles.forEach((testFile) => {
                     metadata: parsed.metadata,
                 };
 
-                expect(expected).toStrictEqual(actual);
+                const state = new State();
+                const { value, error } = state.parse_full(source, false);
+
+
+                expect(value).toStrictEqual(result);
             });
         });
     });

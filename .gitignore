@@ -1,2 +1,7 @@
 /node_modules
 /dist
+target/
+.DS_Store
+out/
+.idea
+.build

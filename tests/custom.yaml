@@ -198,3 +198,16 @@ tests:
             value: "step"
       metadata:
         "source": "example.com"
+        
+  testShortHandPreparation:
+    source: |
+      @onion{1}(peeled and finely chopped)
+    result:
+      steps: 
+        -
+          - type: ingredient
+            quantity: 1
+            units: ""
+            name: "onion"
+            preparation: "peeled and finely chopped"
+      metadata: []

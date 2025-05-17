@@ -9,10 +9,10 @@
     <a href="https://www.npmjs.com/package/@cooklang/cooklang-ts"><img src="https://img.shields.io/npm/v/@cooklang/cooklang-ts"></a>
 </div>
 
-
 ## Usage
+
 ```typescript
-import { Recipe, Parser, getImageURL } from '@cooklang/cooklang-ts';
+import { Recipe, Parser, getImageURL } from "@cooklang/cooklang-ts";
 
 const source = `
 >> source: https://www.dinneratthezoo.com/wprm_print/6796
@@ -43,31 +43,21 @@ console.log(new Parser().parse(source).metadata);
 //     servings: '2',
 // }
 
-console.log(getImageURL('Mixed Berry Smoothie', {
-    step: 1,
-    extension: 'png'
-}));
+console.log(
+    getImageURL("Mixed Berry Smoothie", {
+        step: 1,
+        extension: "png",
+    })
+);
 // 'Mixed Berry Smoothie.1.png'
 ```
 
 ## Cooklang Specification
+
 The specification can be found [here](https://cooklang.org/docs/spec/).
 
-## WASM
-
-install wasm-pack with cargo
-
-```sh
-cargo install wasm-bindgen-cli wasm-pack
-```
-
-also make sure you have cargo binaries in your path
-
-```sh
-export PATH="$PATH:$HOME/.cargo/bin"
-```
-
 ## GitHub
+
 The repository can be found [here](https://github.com/cooklang/cooklang-ts).
 
 ## Generating Wasm package
@@ -77,7 +67,9 @@ npm run build-wasm
 ```
 
 ## Testing
+
 Tests are as found in https://github.com/cooklang/spec/blob/main/tests/canonical.yaml.
+
 ```sh
 npm test
 ```

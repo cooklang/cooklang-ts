@@ -32,4 +32,4 @@ export * from './Recipe';
 export * from './Parser';
 export * from './cooklang';
 
-export * from "cooklang-wasm";
+export * from "../pkg";

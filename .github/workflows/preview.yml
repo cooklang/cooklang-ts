@@ -13,6 +13,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+      - run: npm ci
       - run: npm run build
       - name: Publish Preview Versions
         run: npx pkg-pr-new publish

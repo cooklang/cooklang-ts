@@ -1,5 +1,12 @@
 # Cooklang-TS
 
+> [!WARNING]
+> **This package is deprecated!** Please migrate to [@cooklang/cooklang](https://www.npmjs.com/package/@cooklang/cooklang)
+>
+> The new WASM-powered package offers better performance, consistent behavior with the official Rust parser, and active maintenance.
+>
+> 📖 [Read the Migration Guide](https://github.com/cooklang/cooklang-rs/blob/main/typescript/MIGRATION.md)
+
 ![cooklang-ts logo](https://github.com/cooklang/cooklang-ts/blob/main/assets/logo_white_bg.svg?raw=true)
 
 <div align="center">

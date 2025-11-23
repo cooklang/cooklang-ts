@@ -1,7 +1,8 @@
 {
   "name": "@cooklang/cooklang-ts",
-  "version": "1.2.7",
-  "description": "Cooklang-TS is a TypeScript library for parsing and manipulating Cooklang recipes.",
+  "version": "1.2.8",
+  "description": "⚠️ DEPRECATED - Use @cooklang/cooklang instead. Cooklang-TS is a TypeScript library for parsing and manipulating Cooklang recipes.",
+  "deprecated": "This package is deprecated. Please use @cooklang/cooklang instead for better performance and active maintenance. Migration guide: https://github.com/cooklang/cooklang-rs/blob/main/typescript/MIGRATION.md",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
